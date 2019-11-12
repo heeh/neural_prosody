@@ -1,0 +1,15 @@
+signal f2bst17p7
+type 0
+color 115
+font -*-times-medium-r-*-*-17-*-*-*-*-*-*-*
+separator ;
+nfields 2
+#
+    0.245000  115 H* ; marginal P 
+    0.450365  115 HiF0
+    0.470000  115 H*
+    1.020000  115 !H*
+    1.145310  115 H-H%
+    1.464107  115 L+H*
+    1.479288  115 HiF0
+    1.663145  115 H-H%
