@@ -1,0 +1,15 @@
+signal m1bst07p4
+type 0
+color 115
+comment created using xlabel Thu Jan 16 14:52:56 1997
+font -*-times-medium-r-*-*-17-*-*-*-*-*-*-*
+separator ;
+nfields 1
+#
+    0.533788  115 >
+    0.533788  115 HiF0
+    0.701470  115 H+!H*
+    1.212901  115 L+!H*
+    1.743894  115 L-L%
+    2.202226  115 L*
+    2.495669  115 H-H%
