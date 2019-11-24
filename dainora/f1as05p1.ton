@@ -1,0 +1,19 @@
+signal f1ast05p1
+type 0
+color 115
+comment created using xlabel Mon Jul 22 14:49:11 1996
+font -*-times-medium-r-*-*-17-*-*-*-*-*-*-*
+separator ;
+nfields 1
+#
+    0.081377  115 HiF0
+    0.090096  115 H*
+    0.363291  115 !H*
+    0.927119  115 !H*
+    1.145093  115 H-L%
+    1.470602  115 H*
+    1.906552  115 *?
+    2.327969  115 *?
+    2.569195  115 H*
+    2.606977  115 HiF0
+    2.699979  115 L-H%

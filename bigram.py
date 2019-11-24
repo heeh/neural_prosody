@@ -3,8 +3,6 @@ import typing
 from sys import stdin, stdout
 from collections import Counter
 from collections import defaultdict
-
-
 from prettytable import PrettyTable
 
 

@@ -7,7 +7,7 @@ from prettytable import PrettyTable
 
 wrd_path = os.getcwd() + "/wrd_sample/"
 ton_path = os.getcwd() + "/ton_sample/"
-
+output_path = os.getcwd() + "/output/"
 stoptones = ['HiF0', '*', '<', '>', '%r', '24.67']
 
 words = []
@@ -19,6 +19,8 @@ final_ip_tones = Counter()
 nf_ip_phrase = []
 final_ip_phrase = []
 ip_phrase = []
+
+all_end_symbols = set(['H-H%','H-L%','L-H%','L-L%','!H-L%', 'H-','L-','!H-'])
 
 end_symbols = set(['H-H%','H-L%','L-H%','L-L%','!H-L%'])
 ip_end_symbols = set(['H-','L-','!H-'])
@@ -92,17 +94,54 @@ def align():
             tonStr = ton[1]
             if wordBegin <= tonTime < wordEnd:
                 w[3] += tonStr + ' '
+        if w[3] == '':
+            w[3] = '0'
             
+
+def write_words_and_tags():
+    words_output = open(output_path + "words.txt", "w")
+    tags_output = open(output_path + "tags.txt", "w")
+
+    for w in words:
+        words_output.write(w[2] + '\n')
+        tags_output.write(w[3] + '\n')
+
+
             
+def write_ips_and_tones():
+    ip_output = open(output_path + "ips.txt", "w")
+    tone_output = open(output_path + "tones.txt", "w")
+
+
+    ips = []
+    tones = []
+    ip = ''
+    ton = ''
+    for w in words:
+        ip += w[2] + ' '
+        ton += w[3] + ' '
+        for es in all_end_symbols:
+            if es in w[3]:
+                ips.append(ip)
+                tones.append(ton)
+                ip = ''
+                ton = ''
+                break
             
-            
+
+    for ip in ips:
+        ip_output.write(ip + '\n')
+    for ton in tones:
+        tone_output.write(ton + '\n')
 
 def main()->None:
     parse_wrd()
     parse_ton()
     align()
-    for w in words:
-        print(w)
+    # for w in words:
+    #     print(w)
+    write_words_and_tags()
+    write_ips_and_tones()
 
     
 
