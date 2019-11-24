@@ -119,7 +119,7 @@ def write_ips_and_tones():
     ton = ''
     for w in words:
         ip += w[2] + ' '
-        ton += w[3] + ' '
+        ton += '[' + w[3] + '] '
         for es in all_end_symbols:
             if es in w[3]:
                 ips.append(ip)
