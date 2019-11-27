@@ -5,9 +5,10 @@ from collections import Counter
 from collections import defaultdict
 from prettytable import PrettyTable
 
-wrd_path = os.getcwd() + "/wrd_sample/"
-ton_path = os.getcwd() + "/ton_sample/"
-output_path = os.getcwd() + "/output/"
+wrd_path = os.getcwd() + "/input/wrd_sample/"
+ton_path = os.getcwd() + "/input/ton_sample/"
+train_path = os.getcwd() + "/output/train/"
+test_path = os.getcwd() + "/output/test/"
 stoptones = ['HiF0', '*', '<', '>', '%r', '24.67']
 
 words = []
@@ -29,12 +30,21 @@ ip_end_symbols = set(['H-','L-','!H-'])
 collapse_cand = set(['!H*','L+!H*','L*+!H','!H-', '!H-L%'])
 
 
-class labeled_word:
-    def __init__(self, begin:float, end:float, word:str, label:str):
-        self.begin = begin
-        self.end = end
-        self.word = word
-        self.label = label
+
+
+import os
+from random import shuffle
+from math import floor
+
+def separate_files_from_dir(datadir):
+    file_list = os.listdir(os.path.abspath(datadir))
+    shuffle(file_list)
+    split = 0.7
+    split_index = floor(len(file_list) * split)
+    training = file_list[:split_index]
+    testing = file_list[split_index:]
+    return training, testing
+
 
 def init():
     global words
@@ -109,7 +119,7 @@ def align():
             w[3] = '0'
             
 
-def write_words_and_tags():
+def write_words_and_tags(output_path):
     global words
     words_output = open(output_path + "words.txt", "a")
     tags_output = open(output_path + "tags.txt", "a")
@@ -120,7 +130,7 @@ def write_words_and_tags():
 
 
             
-def write_ips_and_tones():
+def write_ips_and_tones(output_path):
     global words
     global tones
     ip_output = open(output_path + "ips.txt", "a")
@@ -151,13 +161,41 @@ def write_ips_and_tones():
 
 
 def main()->None:
-    for filename in os.listdir(ton_path):
+
+    training, testing = separate_files_from_dir(ton_path)
+    print(training)
+    print(testing)
+
+    if not os.path.exists('input'):
+        os.makedirs('input')
+        os.makedirs('input/sample_wrd')
+        os.makedirs('input/sample_ton')
+
+    
+    if not os.path.exists('output'):
+        os.makedirs('output')
+        os.makedirs('output/train')
+        os.makedirs('output/test')
+
+    
+#    for filename in os.listdir(ton_path):
+    for filename in training:
         init()
         nameonly = filename.split('.')[0]
         parse_wrd(nameonly + '.wrd')
         parse_ton(nameonly + '.ton')
         align()
-        write_words_and_tags()
-        write_ips_and_tones()
+        write_words_and_tags(train_path)
+        write_ips_and_tones(train_path)
+        
+    for filename in testing:
+        init()
+        nameonly = filename.split('.')[0]
+        parse_wrd(nameonly + '.wrd')
+        parse_ton(nameonly + '.ton')
+        align()
+        write_words_and_tags(test_path)
+        write_ips_and_tones(test_path)
+
 
 main()
