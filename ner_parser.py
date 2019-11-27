@@ -16,6 +16,8 @@ tones = []
 nfinal_ip_tones = Counter()
 final_ip_tones = Counter()
 
+fileDict = Counter()
+
 nf_ip_phrase = []
 final_ip_phrase = []
 ip_phrase = []
@@ -33,34 +35,41 @@ class labeled_word:
         self.end = end
         self.word = word
         self.label = label
+
+def init():
+    global words
+    global tones
+    words = []
+    tones = []
+
+
     
-def parse_wrd() -> None:
-    print('parse_wrd()')
-    for filename in os.listdir(wrd_path):
-        inf = open(wrd_path + filename, "r")
-        lines = inf.readlines()[7:]
-        time_begin = 0.0
-        for i in range(len(lines)):
-            target = lines[i].rstrip('\n').split()
-            if(len(target) == 3):
-                time_end = float(target[0])
-                word = target[2]
-                words.append([time_begin,time_end,word,''])
-                time_begin = time_end
+        
+def parse_wrd(filename: str) -> None:
+    global words
+    inf = open(wrd_path + filename, "r")
+    lines = inf.readlines()[7:]
+    time_begin = 0.0
+    for i in range(len(lines)):
+        target = lines[i].rstrip('\n').split()
+        if(len(target) == 3):
+            time_end = float(target[0])
+            word = target[2]
+            words.append([time_begin,time_end,word,''])
+            time_begin = time_end
     
 
 
     
-def parse_ton() -> None:
-    print('parse_ton()')
-    for filename in os.listdir(ton_path):
-        inf = open(ton_path + filename, "r")
-        lines = inf.readlines()[8:]
-        for i in range(len(lines)):
-            target = lines[i].rstrip('\n').split()
-            if(len(target) == 3):
-                if('?' not in target[2] and target[2] not in stoptones):
-                    tones.append([float(target[0]),target[2]])
+def parse_ton(filename: str) -> None:
+    global tones
+    inf = open(ton_path + filename, "r")
+    lines = inf.readlines()[8:]
+    for i in range(len(lines)):
+        target = lines[i].rstrip('\n').split()
+        if(len(target) == 3):
+            if('?' not in target[2] and target[2] not in stoptones):
+                tones.append([float(target[0]),target[2]])
 
     ph = ''
     big_ph = ''
@@ -85,6 +94,8 @@ def parse_ton() -> None:
             ph = ''
 
 def align():
+    global words
+    global tones
     for w in words:
         for ton in tones:
             wordBegin = w[0]
@@ -93,14 +104,15 @@ def align():
             tonTime = ton[0]
             tonStr = ton[1]
             if wordBegin <= tonTime < wordEnd:
-                w[3] += tonStr + ' '
+                w[3] += tonStr
         if w[3] == '':
             w[3] = '0'
             
 
 def write_words_and_tags():
-    words_output = open(output_path + "words.txt", "w")
-    tags_output = open(output_path + "tags.txt", "w")
+    global words
+    words_output = open(output_path + "words.txt", "a")
+    tags_output = open(output_path + "tags.txt", "a")
 
     for w in words:
         words_output.write(w[2] + '\n')
@@ -109,8 +121,10 @@ def write_words_and_tags():
 
             
 def write_ips_and_tones():
-    ip_output = open(output_path + "ips.txt", "w")
-    tone_output = open(output_path + "tones.txt", "w")
+    global words
+    global tones
+    ip_output = open(output_path + "ips.txt", "a")
+    tone_output = open(output_path + "tones.txt", "a")
 
 
     ips = []
@@ -119,30 +133,31 @@ def write_ips_and_tones():
     ton = ''
     for w in words:
         ip += w[2] + ' '
-        ton += '[' + w[3] + '] '
+        ton += w[3] + ' '
         for es in all_end_symbols:
             if es in w[3]:
+                ip = ip.rstrip()
+                ton = ton.rstrip()
                 ips.append(ip)
                 tones.append(ton)
                 ip = ''
                 ton = ''
                 break
             
-
     for ip in ips:
         ip_output.write(ip + '\n')
     for ton in tones:
         tone_output.write(ton + '\n')
 
-def main()->None:
-    parse_wrd()
-    parse_ton()
-    align()
-    # for w in words:
-    #     print(w)
-    write_words_and_tags()
-    write_ips_and_tones()
 
-    
+def main()->None:
+    for filename in os.listdir(ton_path):
+        init()
+        nameonly = filename.split('.')[0]
+        parse_wrd(nameonly + '.wrd')
+        parse_ton(nameonly + '.ton')
+        align()
+        write_words_and_tags()
+        write_ips_and_tones()
 
 main()
