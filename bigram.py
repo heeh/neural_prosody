@@ -1,3 +1,4 @@
+import sys
 import os
 import typing
 from sys import stdin, stdout
@@ -6,7 +7,7 @@ from collections import defaultdict
 from prettytable import PrettyTable
 
 
-path = os.getcwd() + "/dainora/"
+path = os.getcwd() + "/input/dainora/"
 stoptokens = ['HiF0', '*', '<', '>', '%r', '24.67']
 
 tokens = []
@@ -47,7 +48,7 @@ def analyze() -> None:
     ph = ''
     big_ph = ''
     for token in tokens:
-        # Collapse downstep symbols by Dinora
+        # Collapse downstep symbols by Dinora's assumption
         if token in collapse_cand:
             token = token.replace('!','')
         ph += ' ' + token
@@ -111,7 +112,7 @@ def printNumbers():
 
     print('# of phrases:')
     print(len(nf_ip_phrase) + len(final_ip_phrase))
-    print('# of tons')
+    print('# of tones')
     print(len(tokens))
     
     # print('nfinal_ip_tokens')
@@ -167,6 +168,9 @@ def printPitchAccentMatrix():
     
 
 def main()->None:
+    global path
+    if len(sys.argv) != 1:
+        path = os.getcwd() + sys.argv[1]
     analyze()
     printNumbers()
     # printDist('Non-final IP Distribution', ip_counter, ip_lm)
