@@ -17,7 +17,7 @@ wrd_path = input_path[0]
 ton_path = input_path[1]
 pos_path = input_path[2]
 outpath = os.getcwd() + "/output/"
-data_path = [os.getcwd() + "/output/train/", os.getcwd() + "/output/test/", os.getcwd() + "/output/validate/"]
+data_path = [os.getcwd() + "/output/train/", os.getcwd() + "/output/test/", os.getcwd() + "/output/dev/"]
 
 
 # input_path = [os.getcwd() + "/tiny_input/wrd/", os.getcwd() + "/tiny_input/ton/", os.getcwd() + "/tiny_input/pos/"]
@@ -25,7 +25,7 @@ data_path = [os.getcwd() + "/output/train/", os.getcwd() + "/output/test/", os.g
 # ton_path = input_path[1]
 # pos_path = input_path[2]
 # outpath = os.getcwd() + "/tiny_output/"
-# data_path = [os.getcwd() + "/tiny_output/train/", os.getcwd() + "/tiny_output/test/", os.getcwd() + "/tiny_output/validate/"]
+# data_path = [os.getcwd() + "/tiny_output/train/", os.getcwd() + "/tiny_output/test/", os.getcwd() + "/tiny_output/dev/"]
 
 stoptones = ['HiF0', '*', '<', '>', '%r', '24.67']
 words = []
@@ -164,17 +164,17 @@ def write_ips_and_tones(output_path):
     global tones
     global poss
 
-    for x in ['train', 'test', 'validate']:
+    for x in ['train', 'test', 'dev']:
         if x in output_path:
-            if x == 'validate':
+            if x == 'dev':
                 conll_output = open(output_path + "dev.txt", "a+")
             else:
                 conll_output = open(output_path + x + ".txt", "a+")
             break
         
-    ip_output = open(output_path + "phrase_word.txt", "a+")
-    tone_output = open(output_path + "phrase_tone.txt", "a+")
-    pos_phrase_output = open(output_path + "phrase_pos.txt", "a+")
+    ip_output = open(output_path + "ip_word.txt", "a+")
+    tone_output = open(output_path + "ip_tone.txt", "a+")
+    pos_phrase_output = open(output_path + "ip_pos.txt", "a+")
 
 
     ips = []

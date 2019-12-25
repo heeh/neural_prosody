@@ -6,8 +6,12 @@ from collections import Counter
 from collections import defaultdict
 from prettytable import PrettyTable
 
+entire_sequence = ""
 
-path = os.getcwd() + "/input/tiny/"
+nuclear_accent_dict = Counter()
+
+
+path = os.getcwd() + "/input/all/"
 stoptokens = ['HiF0', '*', '<', '>', '%r', '24.67']
 
 tokens = []
@@ -37,6 +41,7 @@ ip_lm = defaultdict(Counter)
 ending_lm = defaultdict(Counter)
 
 def analyze() -> None:
+    global entire_sequence
     for filename in os.listdir(path):
         inf = open(path + filename, "r")
         lines = inf.readlines()[8:]
@@ -49,18 +54,23 @@ def analyze() -> None:
     ph = ''
     big_ph = ''
     for token in tokens:
+        entire_sequence += token
         # Collapse downstep symbols by Dinora's assumption
         if token in collapse_cand:
             token = token.replace('!','')
         ph += token + ' '
         big_ph += token + ' '
-        if token in end_symbols:
-            ip_phrase.append(big_ph)
+        
+        #if token in end_symbols:
+        if '%' in token:
+            ip_phrase.append(big_ph.rstrip())
             big_ph = ''
             final_ip_phrase.append(ph.rstrip())
             final_ip_tokens.update(ph.split())
+
             ph = ''
-        elif token in ip_end_symbols:
+        elif '-' in token:
+        #elif token in ip_end_symbols:
             nf_ip_phrase.append(ph.rstrip())
             nfinal_ip_tokens.update(ph.split())
             ph = ''
@@ -119,16 +129,16 @@ def printNumbers():
     print('# of IP')
     print(len(ip_phrase))
 
-    for x in ip_phrase:
-        print(x)
+    # for x in ip_phrase:
+    #     print(x)
     print('# of final iP')
     print(len(final_ip_phrase))
-    for x in final_ip_phrase:
-        print(x)
+    # for x in final_ip_phrase:
+    #     print(x)
     print('# of non-final iP')
     print(len(nf_ip_phrase))
-    for x in nf_ip_phrase:
-        print(x)
+    # for x in nf_ip_phrase:
+    #     print(x)
 
     print('# of tones')
     print(len(tokens))
@@ -187,18 +197,255 @@ def printProb(uni_ip_lm, uni_ending_lm, ip_lm, ending_lm):
 def printPitchAccentMatrix():
     pass
 
+
+# Python program for KMP Algorithm 
+def KMPSearch(pat, txt):
+    global nuclear_accent_dict
+    M = len(pat) 
+    N = len(txt) 
+  
+    # create lps[] that will hold the longest prefix suffix  
+    # values for pattern 
+    lps = [0]*M 
+    j = 0 # index for pat[] 
+  
+    # Preprocess the pattern (calculate lps[] array) 
+    computeLPSArray(pat, M, lps) 
+  
+    i = 0 # index for txt[] 
+    while i < N: 
+        if pat[j] == txt[i]: 
+            i += 1
+            j += 1
+  
+        if j == M: 
+            #print("Found pattern at index " + str(i-j))
+            nuclear_accent_dict[pat] += 1
+            j = lps[j-1] 
+  
+        # mismatch after j matches 
+        elif i < N and pat[j] != txt[i]: 
+            # Do not match lps[0..lps[j-1]] characters, 
+            # they will match anyway 
+            if j != 0: 
+                j = lps[j-1] 
+            else: 
+                i += 1
+  
+def computeLPSArray(pat, M, lps): 
+    len = 0 # length of the previous longest prefix suffix 
+  
+    lps[0] # lps[0] is always 0 
+    i = 1
+  
+    # the loop calculates lps[i] for i = 1 to M-1 
+    while i < M: 
+        if pat[i]== pat[len]: 
+            len += 1
+            lps[i] = len
+            i += 1
+        else: 
+            # This is tricky. Consider the example. 
+            # AAACAAAA and i = 7. The idea is similar  
+            # to search step. 
+            if len != 0: 
+                len = lps[len-1] 
+  
+                # Also, note that we do not increment i here 
+            else: 
+                lps[i] = 0
+                i += 1
+  
+
+def numNuclearTunesAll():
+    final_seq = ""
+    for ph in final_ip_phrase:
+        final_seq += ph.replace(' ','')
+
+    final_seq.replace(' ', '')
+    print(final_seq)
+
+#    print(entire_sequence)
+#    txt = entire_sequence
+    txt = final_seq
+    # all_patterns = ["H*L-", "H*H-",
+    #             "L*H-", "L*L-",
+    #             "L+H*H-", "L+H*L-",
+    #             "L*+HL-",  "L*+HH-",
+    #             "H+!H*H-", "H+!H*L-",]
+    all_patterns = ['H*','L*','L+H*', 'L*+H', 'H+!H*']
+
+    
+    for pat in all_patterns:
+        KMPSearch(pat, txt) 
+
+    allSumArr = [0] * 5
+    for i in range(0,5):
+        allSumArr[i] = nuclear_accent_dict[all_patterns[i]]
+    
+
+    IP_patterns = ["H*L-L%", "H*L-H%", "H*H-H%","H*H-L%",
+                "L*L-H%","L*H-L%", "L*H-H%", "L*L-L%",
+                "L+H*L-H%", "L+H*L-L%","L+H*H-H%", "L+H*H-L%",
+                "L*+HL-L%","L*+HH-L%","L*+HH-H%","L*+HL-H%",
+                "H+!H*L-L%", "H+!H*L-H%", "H+!H*H-L%", "H+!H*H-H%",]
+
+    for pat in IP_patterns:
+        KMPSearch(pat, txt) 
+
+
+    IPsumArr = [0] * 5
+    for i in range(0,5):
+        for j in range(4 * i, (4 * i) + 4):
+            IPsumArr[i] += nuclear_accent_dict[IP_patterns[j]]
+    # print("all")
+    # print(allSumArr)
+    print("Final")
+    print(IPsumArr)
+
+    interSumArr = [0] * 5
+    for i in range(5):
+        interSumArr[i] = allSumArr[i] - IPsumArr[i]
+    
+    print("Nonfinal")
+    print(interSumArr)
+
+    sumFinal = 0
+    sumNF = 0
+    for i in range(5):
+        sumFinal += IPsumArr[i]
+        sumNF += interSumArr[i]
+
+    print("Final")
+    for i in range(5):
+        print(IPsumArr[i] / sumFinal * 100)
+    print("NF")
+    for i in range(5):
+        print(interSumArr[i] / sumNF * 100)
+
+    
+
+
+
+                
+def numNuclearTunes():
+    #print(entire_sequence)
+    txt = entire_sequence
+    pat1 = "H*L-L%"
+    patterns = ["H*L-L%", "H*L-H%", "L+H*L-H%", "L+H*L-L%", "L*L-H%",
+                "H+!H*L-L%", "H*H-L%", "L+H*H-L%", "H+!H*L-H%", "L*L-L%",
+                "H*H-H%", "L*+HL-L%", "L+H*H-H%", "L*H-L%", "L*H-H%",
+                "L*+HH-L%", "L*+HL-H%", "H+!H*H-L%", "H+!H*H-H%", "L*+HH-H%"]
+    for pat in patterns:
+        KMPSearch(pat, txt) 
+
+    sumOccur = 0
+    for pat in patterns:
+        sumOccur += nuclear_accent_dict[pat]
+        print("%s + %d" % (pat, nuclear_accent_dict[pat]))
+
+    for pat in patterns:
+        print("%s + %.4f" % (pat, nuclear_accent_dict[pat]/sumOccur*100))
+
+def numIntermediatePhrase():
+    print("numIntermediatePhrase()")
+    numIntermediatePhraseList = [0] * 10
+    for ip in ip_phrase:
+        cnt = 0
+        for c in ip:
+            if c == '-':
+                cnt += 1
+        numIntermediatePhraseList[cnt] += 1
+
+    sumInter = 0
+    for i in range(1,8):
+        sumInter += numIntermediatePhraseList[i]
+    for i in range(1,8):
+        print(numIntermediatePhraseList[i])
+    for i in range(1,8):
+        print(numIntermediatePhraseList[i] / sumInter * 100)
+
+        
+def numPitchAccents():
+    nf_numAccentList = [0] * 10
+    f_numAccentList = [0] * 10
+    
+    # print(nf_ip_phrase[:5])
+    # print(final_ip_phrase[:5])
+    # print(ip_phrase[:5])
+
+    for nfip in nf_ip_phrase:
+        cnt = 0
+        for c in nfip:
+            if c == '*':
+                cnt += 1
+        nf_numAccentList[cnt] += 1
+        # if cnt == 0:
+        #     print(nfip)
+
+    # print("nf_iP")
+    # for i in range(10):
+    #     print("#: %d freq: %d" % (i, nf_numAccentList[i]))
+
+
+    for fip in final_ip_phrase:
+        cnt = 0
+        for c in fip:
+            if c == '*':
+                cnt += 1
+        f_numAccentList[cnt] += 1
+
+    # print("f_iP")
+    # for i in range(10):
+    #     print("#: %d freq: %d" % (i, f_numAccentList[i]))
+
+
+    print("all_iP")
+    for i in range(1,8):
+        print("#: %d freq: %d" % (i, nf_numAccentList[i] + f_numAccentList[i]))
+
+    
+    sum_nf_num_accents = 0
+    sum_f_num_accents = 0
+    
+    for i in range(1,8):
+        sum_nf_num_accents += nf_numAccentList[i]
+        sum_f_num_accents  +=  f_numAccentList[i]
+
+    print("nf")
+    for i in range(1,8):
+        print(nf_numAccentList[i] / sum_nf_num_accents * 100)
+
+    print("f")
+    for i in range(1,8):
+        print(f_numAccentList[i] / sum_f_num_accents * 100)
+
+    print("all ip")
+    for i in range(1,8):
+        print((nf_numAccentList[i] + f_numAccentList[i]) / (sum_nf_num_accents + sum_f_num_accents) * 100)
+
+
+                
+
 def main()->None:
+    global nuclear_accent_dict
+    global entire_sequence
     global uni_lm
     global ip_lm
     global ending_lm
-
     global path
     if len(sys.argv) != 1:
         path = os.getcwd() + sys.argv[1]
     analyze()
     printNumbers()
-    printToneMatrix("Non-final", ip_counter, ip_lm)
-    printToneMatrix("Final", ending_counter, ending_lm)
-    printProb(uni_ip_lm, uni_ending_lm, ip_lm, ending_lm)
+    # printToneMatrix("Non-final", ip_counter, ip_lm)
+    # printToneMatrix("Final", ending_counter, ending_lm)
+    # printProb(uni_ip_lm, uni_ending_lm, ip_lm, ending_lm)
+    # of Nuclear Tune Dist
+    numNuclearTunesAll()
+    #numNuclearTunes()
+    # Number of accent in an intermediate phrase
+    #numPitchAccents()
+    #numIntermediatePhrase()
     
 main()

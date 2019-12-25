@@ -28,12 +28,12 @@ then
     mkdir output/
     mkdir output/train
     mkdir output/test
-    mkdir output/validate
+    mkdir output/dev
 
     mkdir tiny_output/
     mkdir tiny_output/train
     mkdir tiny_output/test
-    mkdir tiny_output/validate
+    mkdir tiny_output/dev
 fi
 
 
