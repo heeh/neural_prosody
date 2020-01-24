@@ -1,7 +1,12 @@
 * Prosody Distribution
 This git repository contains four modules.
-** 1. preprocessing.py: Data preprocessing
-** 2. bigram.py: Bigram Distribution
-** 3. LSTM.ipynb: LSTM implementation of prosody detection and generation
-** 4. BERT.ipynb: BERT implementation of prosody detection and generation
+** preprocessing.py: 
+Data preprocessing
+** bigram.py: 
+Bigram Distribution
+** LSTM.ipynb: 
+LSTM implementation of prosody detection and generation
+** BERT.ipynb: 
+BERT implementation of prosody detection and generation
+
 Contact me at heehcs@gmail.com if you have any question or comment.
