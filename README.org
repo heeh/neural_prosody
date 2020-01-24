@@ -1,3 +1,6 @@
+#+OPTIONS: ^:nil
+#+OPTIONS: _:nil
+
 * Prosody Distribution
 
 This git repository contains three modules.
@@ -6,9 +9,9 @@ This git repository contains three modules.
 A naive probabilistic model that prints out the conditional probability of tone
 symbol. In order to execute, following procedure.
 *** 0) Extract Boston Radio Speech Corpus
-*** 1) Place "bu\_radio" directory in current directory.
+*** 1) Place "bu_radio" directory in current directory.
 *** 2) $sh reset.sh
-*** 3) $sh retrieve\_files.sh
+*** 3) $sh retrieve_files.sh
 *** 4) $python3 preprocessing.py
 *** 5) $python3 bigram.py
 

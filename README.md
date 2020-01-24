@@ -1,26 +1,27 @@
 
 # Table of Contents
 
-1.  [Prosody Distribution](#org92cfffe)
-    1.  [1. bigram.py:](#org6461c75)
-        1.  [0) Extract Boston Radio Speech Corpus](#org58b79d9)
-        2.  [1) Place "bu\\<sub>radio</sub>" directory in current directory.](#orgbe5a599)
-        3.  [2) $sh reset.sh](#org80f330d)
-        4.  [3) $sh retrieve\\<sub>files.sh</sub>](#orga3e7152)
-        5.  [4) $python3 preprocessing.py](#org23a3800)
-        6.  [5) $python3 bigram.py](#orgb21b3e8)
-    2.  [2. LSTM.ipynb:](#org6119821)
-    3.  [3. BERT.ipynb:](#org9561adc)
+1.  [Prosody Distribution](#orge4602f0)
+    1.  [1. bigram.py:](#orgb974103)
+        1.  [0) Extract Boston Radio Speech Corpus](#orgd922272)
+        2.  [1) Place "bu\_radio" directory in current directory.](#org3a46e7f)
+        3.  [2) $sh reset.sh](#org5a06a58)
+        4.  [3) $sh retrieve\_files.sh](#org2254c2d)
+        5.  [4) $python3 preprocessing.py](#orgcd507f9)
+        6.  [5) $python3 bigram.py](#org7792829)
+    2.  [2. LSTM.ipynb:](#org81b28ad)
+    3.  [3. BERT.ipynb:](#org9edcf76)
 
 
-<a id="org92cfffe"></a>
+
+<a id="orge4602f0"></a>
 
 # Prosody Distribution
 
 This git repository contains three modules.
 
 
-<a id="org6461c75"></a>
+<a id="orgb974103"></a>
 
 ## 1. bigram.py:
 
@@ -28,37 +29,37 @@ A naive probabilistic model that prints out the conditional probability of tone
 symbol. In order to execute, following procedure.
 
 
-<a id="org58b79d9"></a>
+<a id="orgd922272"></a>
 
 ### 0) Extract Boston Radio Speech Corpus
 
 
-<a id="orgbe5a599"></a>
+<a id="org3a46e7f"></a>
 
-### 1) Place "bu\\<sub>radio</sub>" directory in current directory.
+### 1) Place "bu\_radio" directory in current directory.
 
 
-<a id="org80f330d"></a>
+<a id="org5a06a58"></a>
 
 ### 2) $sh reset.sh
 
 
-<a id="orga3e7152"></a>
+<a id="org2254c2d"></a>
 
-### 3) $sh retrieve\\<sub>files.sh</sub>
+### 3) $sh retrieve\_files.sh
 
 
-<a id="org23a3800"></a>
+<a id="orgcd507f9"></a>
 
 ### 4) $python3 preprocessing.py
 
 
-<a id="orgb21b3e8"></a>
+<a id="org7792829"></a>
 
 ### 5) $python3 bigram.py
 
 
-<a id="org6119821"></a>
+<a id="org81b28ad"></a>
 
 ## 2. LSTM.ipynb:
 
@@ -67,7 +68,7 @@ This code is accessible via <https://colab.research.google.com/drive/1FkxnOhl6sU
 Nevertheless, this .ipynb file contains previous output.
 
 
-<a id="org9561adc"></a>
+<a id="org9edcf76"></a>
 
 ## 3. BERT.ipynb:
 
