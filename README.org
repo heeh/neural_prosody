@@ -1,16 +1,16 @@
 * Prosody Distribution
 
 This git repository contains four modules.
-1. preprocessing.py: 
+** 1.preprocessing.py: 
 Data preprocessing to collect tone and word from boston radio speech corpus.
 
-2. bigram.py: 
+** 2. bigram.py: 
 A naive probabilistic model that prints out the conditional probability of tone symbol.
 
-3. LSTM.ipynb: 
+** 3. LSTM.ipynb: 
 Prosody detection and generation using pytorch LSTM.
 
-4. BERT.ipynb: 
+** 4. BERT.ipynb: 
 Prosody detection and generation using BERT-NER(https://github.com/huggingface/transformers/tree/master/examples#named-entity-recognition)
 
 Contact me at heehcs@gmail.com if you have any question or comment.

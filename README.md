@@ -1,28 +1,44 @@
 
 # Table of Contents
 
-1.  [Prosody Distribution](#org08711f7)
+1.  [Prosody Distribution](#org49300f0)
+    1.  [1.preprocessing.py:](#org81ec9d8)
+    2.  [2. bigram.py:](#orgc33eb6f)
+    3.  [3. LSTM.ipynb:](#orge3a8f88)
+    4.  [4. BERT.ipynb:](#orgf2814b9)
 
 
-<a id="org08711f7"></a>
+<a id="org49300f0"></a>
 
 # Prosody Distribution
 
 This git repository contains four modules.
 
-1.  preprocessing.py:
+
+<a id="org81ec9d8"></a>
+
+## 1.preprocessing.py:
 
 Data preprocessing to collect tone and word from boston radio speech corpus.
 
-1.  bigram.py:
+
+<a id="orgc33eb6f"></a>
+
+## 2. bigram.py:
 
 A naive probabilistic model that prints out the conditional probability of tone symbol.
 
-1.  LSTM.ipynb:
+
+<a id="orge3a8f88"></a>
+
+## 3. LSTM.ipynb:
 
 Prosody detection and generation using pytorch LSTM.
 
-1.  BERT.ipynb:
+
+<a id="orgf2814b9"></a>
+
+## 4. BERT.ipynb:
 
 Prosody detection and generation using BERT-NER(<https://github.com/huggingface/transformers/tree/master/examples#named-entity-recognition>)
 
