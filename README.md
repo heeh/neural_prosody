@@ -16,7 +16,6 @@ symbol. In order to execute, following procedure.
 
 ## 2. LSTM.ipynb:
 - Prosody detection and generation using pytorch LSTM. 
-- This code is accessible via [Colab](https://colab.research.google.com/drive/1FkxnOhl6sUztp70GeJW14e2xL5FdbIII>).
 - Nevertheless, this `.ipynb` file contains previous output.
 
 ## 3. BERT.ipynb:
@@ -24,4 +23,3 @@ symbol. In order to execute, following procedure.
 - [Colab Link](https://colab.research.google.com/drive/1rb89J8tkFog5avhhOiIzQcClC13t7lV1)
 
 Contact me at heehcs@gmail.com if you have any question or comment.
-
